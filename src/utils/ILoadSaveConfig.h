@@ -34,6 +34,14 @@ namespace bgslibrary
     virtual void save_config(cv::FileStorage &fs) = 0;
     virtual void load_config(cv::FileStorage &fs) = 0;
     void initLoadSaveConfig(const std::string _config_file_name) {
+      if (!_base_path_modified) {
+        char const* tmp = getenv("BGS_CONFIG_BASE_PATH");
+        if ( tmp != NULL ) {
+            std::string overriden(tmp);
+            config_base_path = overriden;
+        }
+        _base_path_modified = true;
+      }
       if(!_config_file_name.empty()) {
         config_file_path = config_base_path + "/" + _config_file_name + config_extension;
         if (!std::ifstream(config_file_path))
@@ -43,6 +51,7 @@ namespace bgslibrary
     }
     
   private:
+    bool _base_path_modified = false;
     void _save_config() {
       //std::cout << "_save_config: " << config_file_path << std::endl;
       cv::FileStorage fs(config_file_path, cv::FileStorage::WRITE);
