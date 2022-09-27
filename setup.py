@@ -217,6 +217,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     ext_modules=[CMakeExtension(name='pybgs', sourcedir='.')],
+    install_requires=["Cython","numpy"],
     cmdclass={
         'build_ext': BuildCMakeExt,
         'install_data': InstallCMakeLibsData,
